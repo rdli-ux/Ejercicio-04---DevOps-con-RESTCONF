@@ -1,6 +1,7 @@
+---
 name: CI-CD RESTCONF - Ricardo Daniel
 
-on:
+"on":
   pull_request:
   push:
     branches: [main]
@@ -20,7 +21,7 @@ jobs:
       - run: pip install -r requirements.txt
       - name: Build - lint
         run: |
-          yamllint config/ src/ tests/
+          yamllint config/ src/ tests/ .github/
           flake8 src tests --max-line-length 100
       - name: Test - unitarias
         run: pytest -q
