@@ -1,0 +1,12 @@
+---
+host: 10.10.20.48
+port: 443
+loopback:
+  id: 201
+  description: MGMT-LOOPBACK-RICARDO-DANIEL
+  ip: 10.201.201.1
+  mask: 255.255.255.255
+snmp:
+  community: DEVOPS-RO
+  location: Lab-DevNet-Ricardo
+  contact: 1225100759.rdli@gmail.com

@@ -1,0 +1,43 @@
+name: CI-CD RESTCONF - Ricardo Daniel
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+env:
+  SANDBOX_USER: ${{ secrets.SANDBOX_USER }}
+  SANDBOX_PASS: ${{ secrets.SANDBOX_PASS }}
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Build - lint
+        run: |
+          yamllint config/ src/ tests/
+          flake8 src tests --max-line-length 100
+      - name: Test - unitarias
+        run: pytest -q
+      - name: Test - prueba en seco contra el switch de Ricardo
+        run: python src/deploy.py --check
+
+  deploy:
+    needs: build-test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Deploy
+        run: python src/deploy.py
+      - name: Monitor
+        run: python src/verify.py
