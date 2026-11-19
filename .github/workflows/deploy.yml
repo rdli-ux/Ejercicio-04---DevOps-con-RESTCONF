@@ -30,7 +30,7 @@ jobs:
           if nc -z -w 5 10.10.20.48 443 2>/dev/null; then
             python src/deploy.py --check
           else
-            echo "[INFO] Sandbox privado (10.10.20.48) requiere VPN. Validado en local."
+            echo "[INFO] VPN requerida (10.10.20.48). Validado local."
           fi
 
   deploy:
